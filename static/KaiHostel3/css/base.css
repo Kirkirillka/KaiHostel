@@ -1,0 +1,63 @@
+
+#holder{
+    overflow: hidden;
+    position: relative;
+    padding:10px;
+    margin: 10px;
+    border:1px solid cornsilk;
+}
+
+#content{
+    position: relative;
+    float: left;
+    display: inline-block;
+    width: 80%;
+}
+#main{
+    position: relative;
+}
+
+#tag{
+    display: inline-block;
+    border-radius: 1px;
+    background-color: #ddffdd;
+    margin: 5px;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+
+#pagination{
+    text-align: center;
+    display:block;
+}
+
+#login-snippet{
+    display: table-cell;
+    background-color: #FFF558;
+    height: 100%;
+    padding: 5px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+#head{
+    background-color:#FF6253;
+    opacity: 80;
+    height: 100%;
+    display: block;
+}
+
+#site_name{
+    height: 100%;
+    width: 70%;
+    float: left;
+    text-align: center;
+
+}
+
+
+#name{
+    display: inline
+}
+

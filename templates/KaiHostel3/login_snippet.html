@@ -1,0 +1,10 @@
+    {% if user.is_authenticated %}
+        <p>Welcome, {{ user.username }}!</p>
+        <p><a href="{% url 'KaiHostel3:logout' %}">Logout here</a></p>
+    {% else %}
+        {% if user.is_anonymous %}
+            You are anonyomus!
+            <P>Please,sign in <a href="{% url 'KaiHostel3:login' %}">here</a></P>
+        {% endif %}
+        Register <a href="{% url "KaiHostel3:register" %}">here</a>
+    {% endif%}

@@ -1,0 +1,71 @@
+
+#article {
+    width: 100%;
+    display: inline-block;
+    background-color: #DEFF6B;
+    margin-bottom: 7px;
+}
+
+#article_description {
+    background-color: #FFE791;
+    padding-top: 2%;
+    padding-left: 2%;
+}
+
+#article_short_content {
+    position: relative;
+    font-family: 'Source Sans Pro', sans-serif;
+    color: #666;
+    font-size: 17px;
+}
+
+#article_action {
+    position: relative;
+    background-color: #CCA654;
+}
+
+#article_tags {
+    position: relative;
+    left: 2%;
+    bottom: 12%;
+
+}
+
+#article_information {
+    z-index: 100;
+    position: relative;
+    float: left;
+    margin-left: 19px;
+    margin-right: 5px;
+    padding: 2px;
+    background-color: #FFD069;
+
+}
+
+#article_comment_count {
+    position: relative;
+    bottom: 12%;
+    left: 2%;
+
+}
+
+#article_comment_add{
+    padding: 10px;
+    width: 100%;
+
+}
+
+#article_all_comment{
+    padding: 10px;
+
+}
+
+#comment{
+    margin: 6px;
+    background-color: #f5f5f5;
+    border: 1px seashell solid ;
+}
+
+#comment_data{
+
+}

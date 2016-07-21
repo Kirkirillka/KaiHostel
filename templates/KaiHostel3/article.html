@@ -1,0 +1,58 @@
+{% extends 'KaiHostel3/base.html' %}
+
+{% block content %}
+    <div id="content">
+        {% if article %}
+            <div id="article">
+                <H1>{{ article.article }}</H1>
+
+                <div id="article_detail_pub_date"> Publication_date: {{ article.pub_date|date:"D d M Y" }}</div>
+
+                <div id="article_detail_userprofile"> Customer:{{ article.user_profile }}</div>
+                <div id="article_detail_content"><H3>{{ article.content }}</H3></div>
+                <div id="article_detail_tags">
+                    {% if article.tags %}
+                        {% for tag in article.tags.all %}
+                            <div id="tag">{{ tag.title }}</div>
+                        {% endfor %}
+                    {% else %}
+                        There are not any tags for this article
+                    {% endif %}
+                </div>
+
+                <div id="article_all_comment">
+                    <H3>Comments:</H3>
+                    {% for com in article.comment_set.all %}
+                        <div id="comment">
+                        <div id="comment_data">{{ com.content }}</div>
+                            <div id="comment_info">
+                                {% if com.owner %}
+                                    {{ com.owner }}-{{ com.pub_date }}
+                                {% else %}
+                                    By anon {{ com.username }}-{{ com.pud_date }}
+                                {% endif %}
+
+                            </div>
+
+
+                        </div>
+                    {% empty %}
+                        <H6>Nobody left comment here</H6>
+                    {% endfor %}
+                </div>
+
+
+                <div id="article_comment_add">
+                    <form method="post" action="{% url 'KaiHostel3:add_comment' %}">
+                        {% csrf_token %}
+                        {% for field in form.visible_fields %}
+                            <h3>{{ field.name|upper }}</h3>
+                            <p>{{ field }}</p>
+                        {% endfor %}
+                        <input type="submit" value="Add comment">
+                    </form>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

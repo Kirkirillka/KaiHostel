@@ -1,0 +1,19 @@
+{% extends 'KaiHostel3/base.html' %}
+
+{% block content %}
+    <div id="content">
+        <H1>Registred form</H1>
+        {% if registred %}
+            <strong>Thanks for your registration</strong>
+            <a href="{% url "Blog:all_article" 1 %}">Return to all article</a>
+        {% else %}
+            <strong>Register here</strong>
+            <form id="user_form" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ user_form.as_p }}
+                {{ profile_form.as_p }}
+                <input type="submit" name="submit" value="Register">
+            </form>
+        {% endif %}
+    </div>
+{% endblock %}

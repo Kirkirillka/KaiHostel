@@ -1,0 +1,17 @@
+<div id="menu">
+    <H3>The main menu</H3>
+    <H5><a href="{% url 'KaiHostel3:all_article' 1 %}">All articles</a></H5>
+    {% if user.is_authenticated %}
+        <H5><a href="{% url 'KaiHostel3:add_article' %}">Add article</a></H5>
+         <br>
+    <H5><a href="{% url 'KaiHostel3:all_comment' %}">My comments</a></H5>
+    {% endif %}
+    <H5><a href="{% url 'KaiHostel3:register' %}">Register</a></H5>
+    <H5>
+        {% if user.is_authenticated %}
+            <a href="{% url 'KaiHostel3:logout' %}">Logout</a>
+        {% else %}
+            <a href="{% url 'KaiHostel3:login' %}">Login</a>
+        {% endif %}
+    </H5>
+</div>

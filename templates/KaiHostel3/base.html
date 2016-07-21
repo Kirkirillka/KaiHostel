@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    {% block referense_css %}
+        {% load staticfiles %}
+        <link href="{% static "KaiHostel3/bootstrap/css/bootstrap.css" %}" rel="stylesheet">
+        <link href="{% static "KaiHostel3/bootstrap/css/bootstrap-responsive.css" %}" rel="stylesheet">
+        <link href="{% static "KaiHostel3/css/base.css" %}" rel="stylesheet">
+        <link href="{% static "KaiHostel3/css/article.css" %}" rel="stylesheet">
+        <link href="{% static "KaiHostel3/css/menu.css" %}" rel="stylesheet">
+    {% endblock %}
+    <title>
+        {% block title %}
+        {% endblock %}
+    </title>
+<body>
+{% load staticfiles %}
+<script src="{% static 'KaiHostel3/bootstrap/js/bootstrap.min.js' %}"></script>
+
+
+
+{% block header %}
+    <div id="head">
+        <div id="site_name">
+            <H3>Blog's name</H3>
+        </div>
+        <div id="login-snippet">
+            {% include 'KaiHostel3/login_snippet.html' %}
+        </div>
+    </div>
+{% endblock %}
+
+
+<div id="main">
+{% block content %}
+    <div id="content"></div>
+{% endblock %}
+{% block menu %}
+
+    {% include 'KaiHostel3/menu.html' %}
+
+{% endblock %}
+</div>
+{% block footer %}
+
+{% endblock %}
+
+</body>
+</html>

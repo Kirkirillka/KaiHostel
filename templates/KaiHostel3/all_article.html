@@ -1,0 +1,94 @@
+{% extends 'KaiHostel3/base.html' %}
+{% block title %}
+    Все записи
+{% endblock %}
+{% block content %}
+    <div id="content">
+        {% if article_list %}
+            {% for article in article_list %}
+                <div id='article'>
+                    <div id="article_information">
+                        <div id="article_description">
+                            <H3>
+                                {#  <div id="article_name">#}
+                                <a href="{% url 'KaiHostel3:detail_article'  article.id %}">
+                                    {{ article.article }}
+                                </a>
+                            </H3>
+                            {#</div>#}
+                            <div id="article_owner">
+                                <H4>Owner:</H4>
+                                {{ article.user_profile }}
+                            </div>
+                            <div id="article_pub_date">
+                                <H4>Publication date:</H4>
+                                {{ article.pub_date|date:"D d M Y" }}
+                            </div>
+
+                        </div>
+                        {% if user.userprofile == article.user_profile%}
+                            <div id="article_action">
+                                <div>
+                                    <H2>My action:</H2>
+
+                                    <p>
+                                        <a href="{% url 'KaiHostel3:del_article' article.id %}">
+                                            Delete an article
+                                        </a>
+                                    </p>
+                                </div>
+                            </div>
+                        {% endif %}
+                        <div id="article_comment_count">
+                            Comment {{ article.comment_set.count }} in total
+                        </div>
+                    </div>
+                    <div id="article_short_content">
+                        <H2>Article's title:</H2>{{ article.get_short_description }}
+                    </div>
+                    {% include 'KaiHostel3/tags.html' %}
+                </div>
+            {% endfor %}
+            {# ..... **Now th pagination section** .... #}
+            {% if is_paginated %}
+                <div id="pagination">
+                    <div class="page-links">
+                        {% if page_obj.has_previous %}
+                            <a href="{% url 'KaiHostel3:all_article' page_obj.previous_page_number %}">Previous page</a>
+                        {% endif %}
+                        <div class="page-current">
+                            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+                        </div>
+                        {% if page_obj.has_next %}
+                            <a href="{% url "KaiHostel3:all_article" page_obj.next_page_number %}">Next</a>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endif %}
+        {% else %}
+            <H2>There are not any articles.
+                {% if user.is_authenticated %}
+                    Please,add the new one <a href="{% url 'KaiHostel3:add_article' %}">here</a></H2>
+                {% endif %}
+        {% endif %}
+        {# .... **More content,footer,etc.**.... #}
+    </div>
+{% endblock %}
+
+
+
+<H3>
+    {#  <div id="article_name">#}
+    <a href="{% url 'KaiHostel3:detail_article'  article.id %}">
+        {{ article.article }}
+    </a>
+</H3>
+{#</div>#}
+<div id="article_owner">
+    <H4>Owner:</H4>
+    {{ article.user_profile }}
+</div>
+<div id="article_pub_date">
+    <H4>Publication date:</H4>
+    {{ article.pub_date|date:"D d M Y" }}
+</div>

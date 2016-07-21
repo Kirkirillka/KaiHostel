@@ -1,0 +1,10 @@
+<div id="article_tags">
+    {% if article.tags.count != 0 %}
+        Tags:
+        {% for tag in article.tags.all %}
+            <div id="tag">
+                {{ tag.title }}
+            </div>
+        {% endfor %}
+    {% endif %}
+</div>

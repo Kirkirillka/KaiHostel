@@ -1,0 +1,19 @@
+{% extends 'KaiHostel3/base.html' %}
+
+{% block content %}
+    <div id="content">
+{% if error %}
+    You have not been signed in
+{% else %}
+    {% if list %}
+        {% for comment in list %}
+            <div id="comment">
+                <H2>{{ comment.owner }}</H2>
+                <H3>{{ comment.pub_date }}</H3>
+                <H4>{{ comment.content }}</H4>
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endif %}
+    </div>
+{% endblock %}

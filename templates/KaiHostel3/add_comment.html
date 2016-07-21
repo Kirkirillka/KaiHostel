@@ -1,0 +1,29 @@
+{% extends 'KaiHostel3/base.html' %}
+
+{% block content %}
+    <div id="content">
+        You can add comment here
+        <form method="post" name="post">
+            {% csrf_token %}
+            {% if not user.is_authenticated %}
+                <div name="'if_user_auth">
+                    You need put some information about yourself:
+                    <p>
+                        <input name="username" type="text">
+                    </p>
+
+                    <p>
+                        <input type="url" name="website">
+                    </p>
+
+                    <p>
+                        <input type="file" name="photo">
+                    </p>
+                </div>
+
+            {% endif %}
+            {{ form.as_ul }}
+            <input type="submit">
+        </form>
+    </div>
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends 'KaiHostel3/base.html' %}
+
+{% block content %}
+    <div id="content">
+        {% if not user.is_authenticated %}
+            <form method="post">
+            {% csrf_token %}
+            {{ form.as_ul }}
+            <input type="submit" value="Login">
+        {% else %}
+            You've entered before
+            <P>{{ user.user }}</P>
+        {% endif %}
+    </div>
+{% endblock %}
