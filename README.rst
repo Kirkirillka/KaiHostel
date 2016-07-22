@@ -26,3 +26,6 @@ Quick start
    to create a blog (you'll need the Admin app enabled).
 
 5. Visit http://127.0.0.1:8000/KaiHostel3/ to participate in the Blog.
+
+
+P.S. If you want to setting the logging, you need add LOGGING dict' setting in your PROJECTDIR/settings.py. For extra information you should view the official docs https://docs.djangoproject.com/ja/1.9/topics/logging/
