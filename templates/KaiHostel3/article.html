@@ -49,6 +49,9 @@
                             <h3>{{ field.name|upper }}</h3>
                             <p>{{ field }}</p>
                         {% endfor %}
+                         {% for field in form.hidden_fields %}
+                            <p>{{ field }}</p>
+                        {% endfor %}
                         <input type="submit" value="Add comment">
                     </form>
                 </div>

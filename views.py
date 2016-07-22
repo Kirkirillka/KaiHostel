@@ -8,6 +8,11 @@ from django.contrib.auth import authenticate, logout, login
 from KaiHostel3.forms import ArticleForm, UserForm, UserProfileForm, CommentForm
 from KaiHostel3.models import Article, Comment
 
+import logging
+
+logger=logging.getLogger('KaiHostel3')
+logging.basicConfig(level=logging.DEBUG)
+
 
 # Create your views here.
 
@@ -22,7 +27,6 @@ class Login(FormView):
         return render(request, "KaiHostel3/login.html", {'form': form})
 
     def post(self, request, *args, **kwargs):
-        print('YES')
         form = UserForm(request.POST)
         if form.is_valid:
             username = request.POST.get('username')
@@ -30,14 +34,14 @@ class Login(FormView):
             user = authenticate(username=username, password=password)
             if user:
                 if user.is_active:
-                    print('NO')
                     login(request, user)
+                    logger.info('User {0} has signed in'.format(user))
                     return HttpResponseRedirect(reverse('KaiHostel3:all_article', kwargs={'page': 1}))
                 else:
-                    print('Http response forbidden')
+                    logger.info('User {0} is not active'.format(user))
                     return HttpResponseForbidden('Your account is not active')
             else:
-                print('BAD_CREDENTIALS')
+                logger.warning('Anon has been tried sign up with username:{0} pass:{1}'.format(username,password))
                 return render(request, "KaiHostel3/login.html", {'form': form})
 
         return render(request, "KaiHostel3/login.html", {'form': form})
@@ -45,7 +49,9 @@ class Login(FormView):
 
 class Logout(DetailView):
     def get(self, request, *args, **kwargs):
-        logout(request)
+        if request.user.is_authenticated():
+            logger.info('User {0} has logged out'.format(request.user) )
+            logout(request)
         return HttpResponseRedirect(reverse('KaiHostel3:login', args=args, kwargs=kwargs))
 
 
@@ -69,12 +75,13 @@ class Register(FormView):
                 profile.picture = request.FILES['picture']
 
             profile.save()
+            logger.info('New user has registered {0}'.format(profile))
             self.is_registered = True
-            print('All done')
+
             return render(request, 'KaiHostel3/register.html', {'user_form': user_form,
                                                                 'profile_form': profile_form,
                                                                 'is_registered': self.is_registered})
-        print("That's wrong")
+
         return render(request, 'KaiHostel3/register.html', {'user_form': user_form,
                                                             'profile_form': profile_form,
                                                             'is_registered': self.is_registered})
@@ -121,6 +128,7 @@ class AddArticle(ListView):
             form = ArticleForm()
             return render(request, "KaiHostel3/add_article.html", {'form': form})
         else:
+            logger.warning('Has been attempt to add new article.Permission denied')
             return HttpResponseRedirect(reverse('KaiHostel3:login'))
 
 
@@ -133,29 +141,32 @@ class AddArticle(ListView):
                 article.save()
                 for tag in form.cleaned_data['tags']:
                     article.tags.add(tag)
+                logger.info('The new article has been added: {0}'.format(article))
             return HttpResponseRedirect(reverse("KaiHostel3:all_article", kwargs={'page': 1}))
         return HttpResponse("You haven't permission")
 
 
 class DeleteArticle(View):
     def get(self, request, *args, **kwargs):
+        article_id = kwargs.get('article_id')
         if request.user.is_authenticated():
-
-            article_id = kwargs['article_id']
             article = get_object_or_404(Article, pk=article_id)
 
             if request.user.has_perm('KaiHostel3.delete_article'):
 
                 if request.user.userprofile == article.user_profile:
-                    print('Yes')
+
                     article.delete()
+                    logger.info("User:{0} has deleted the article: {1}".format(request.user,article))
                 else:
+                    logger.warning("User:{0} is not the owner of the article {1}".format(request.user,article))
                     return HttpResponseForbidden("You are not the user who has created this article")
             else:
-                return HttpResponseForbidden(
-                    "You are owner of the one,but you have not permission to do that.Please,contact to administrator for extra information")
+                logger.warning("User: {0} has'not permission to delete article: {1}".format(request.user,article))
+                return HttpResponseForbidden( "You are owner of the one,but you have not permission to do that.Please,contact to administrator for extra information")
 
         else:
+            logger.warning('Has been attempt to delete an article with ID="{0}".Permission denied'.format(article_id))
             return HttpResponseForbidden("You have not permission to do that")
         return HttpResponseRedirect(reverse("KaiHostel3:all_article", kwargs={'page': 1}))
 
@@ -179,22 +190,20 @@ class AddComment(CreateView):
     def post(self, request, *args, **kwargs):
         form = CommentForm(request.POST)
         if form.is_valid() and not form.cleaned_data['content'] == '':
-            print('Yes')
             comment = form.save(commit=False)
 
             if request.user.is_authenticated():
                 owner = request.user.userprofile
-                print(owner)
                 username = ''
+                logger.info("New comment has been added by user: {0} ".format(owner.user.username))
+
             else:
-                print('There is a error!')
                 owner = None
                 username = request.POST.get('username')
+                logger.info("New comment has been added by anonym: {0}".format(username))
             comment.owner = owner
             comment.username = username
             comment.save()
-            print('Saved')
             return HttpResponseRedirect(reverse('KaiHostel3:detail_article', kwargs={'pk': request.POST['article']}))
-        print(form.errors)
         return render(request, "KaiHostel3/add_comment.html", {"form": form})
 
